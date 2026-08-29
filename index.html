@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>Our Little Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root{
+    --bg-0:#0a0710;
+    --bg-1:#130c1a;
+    --bg-2:#1c1220;
+    --glass:rgba(255,255,255,0.05);
+    --glass-border:rgba(255,255,255,0.12);
+    --accent:#ff6b7f;
+    --accent-soft:#ffb4c2;
+    --gold:#d9a868;
+    --ink:#f8eef1;
+    --ink-dim:#cdb9c2;
+    --shadow-glow:0 0 60px rgba(255,107,127,0.25);
+    --serif:'Cormorant Garamond', serif;
+    --sans:'Jost', sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-0);
+    color:var(--ink);
+    font-family:var(--sans);
+    overflow-x:hidden;
+    width:100%;
+    -webkit-tap-highlight-color:transparent;
+  }
+  img,video{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+  a{color:inherit;}
+
+  .section{
+    position:relative;
+    width:100%;
+    padding:min(18vw,110px) 6vw;
+    overflow:hidden;
+  }
+  .section-inner{max-width:720px;margin:0 auto;position:relative;z-index:2;}
+
+  .eyebrow{
+    font-family:var(--sans);
+    letter-spacing:0.35em;
+    text-transform:uppercase;
+    font-size:0.68rem;
+    color:var(--accent-soft);
+    opacity:0.85;
+    display:block;
+    margin-bottom:14px;
+    text-align:center;
+  }
+  .title{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(2.1rem,8vw,3.2rem);
+    text-align:center;
+    color:var(--ink);
+    letter-spacing:0.01em;
+    margin-bottom:8px;
+  }
+  .title em{color:var(--accent);font-style:italic;}
+
+  /* thread divider — signature element */
+  .thread{
+    width:1px;
+    height:70px;
+    margin:0 auto;
+    background:linear-gradient(to bottom, transparent, var(--gold), transparent);
+    position:relative;
+  }
+  .thread::after{
+    content:'♥';
+    position:absolute;
+    left:50%;top:50%;
+    transform:translate(-50%,-50%);
+    font-size:11px;
+    color:var(--gold);
+    background:var(--bg-0);
+    width:20px;height:20px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:50%;
+    border:1px solid var(--gold);
+  }
+
+  .glass{
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-radius:22px;
+  }
+
+  /* ============ HERO ============ */
+  #hero{
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:8vh 6vw;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(255,107,127,0.16), transparent 60%),
+      radial-gradient(ellipse at 20% 90%, rgba(217,168,104,0.10), transparent 55%),
+      linear-gradient(180deg, #0a0710 0%, #120a16 55%, #0a0710 100%);
+  }
+  .hearts-field{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;}
+  .heart-p{
+    position:absolute;bottom:-10%;
+    font-size:14px;
+    color:var(--accent);
+    opacity:0;
+    animation:floatUp linear infinite;
+  }
+  @keyframes floatUp{
+    0%{transform:translateY(0) translateX(0) rotate(0deg);opacity:0;}
+    10%{opacity:0.55;}
+    90%{opacity:0.35;}
+    100%{transform:translateY(-115vh) translateX(20px) rotate(25deg);opacity:0;}
+  }
+
+  .hero-photo-wrap{
+    position:relative;
+    width:min(52vw,220px);
+    height:min(52vw,220px);
+    margin-bottom:26px;
+    z-index:2;
+  }
+  .hero-photo-wrap::before{
+    content:'';
+    position:absolute;inset:-14px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(255,107,127,0.45), transparent 70%);
+    filter:blur(14px);
+  }
+  .hero-photo{
+    width:100%;height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid rgba(255,255,255,0.35);
+    position:relative;
+    box-shadow:var(--shadow-glow);
+  }
+
+  .hero-names{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:600;
+    font-size:clamp(1.9rem,8vw,2.8rem);
+    z-index:2;
+    margin-bottom:10px;
+  }
+  .hero-names .amp{color:var(--accent);margin:0 10px;font-style:normal;}
+  .hero-date{
+    font-size:0.75rem;
+    letter-spacing:0.25em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    margin-bottom:22px;
+    z-index:2;
+  }
+  .hero-tagline{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:clamp(1.1rem,4.2vw,1.4rem);
+    color:var(--accent-soft);
+    z-index:2;
+    margin-bottom:40px;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:16px 34px;
+    border-radius:999px;
+    background:linear-gradient(135deg, var(--accent), #d84a63);
+    color:#fff;
+    font-size:0.95rem;
+    letter-spacing:0.02em;
+    box-shadow:0 10px 30px rgba(255,107,127,0.35);
+    z-index:2;
+    min-height:52px;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .btn:active{transform:scale(0.96);}
+  .btn.ghost{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.35);
+    box-shadow:none;
+  }
+
+  /* ============ STORY ============ */
+  #story{background:linear-gradient(180deg,#0a0710,#150d1b);}
+  .story-card{padding:34px 26px;margin-top:34px;}
+  .story-card p{
+    font-size:1.02rem;
+    line-height:1.85;
+    color:var(--ink-dim);
+    text-align:center;
+    font-weight:300;
+  }
+  .story-media{
+    margin-top:30px;
+    border-radius:22px;
+    overflow:hidden;
+    border:1px solid var(--glass-border);
+    box-shadow:0 20px 50px rgba(0,0,0,0.45);
+  }
+  .story-media video{width:100%;aspect-ratio:9/13;object-fit:cover;}
+
+  /* ============ TIMELINE (Perjalanan Kita) ============ */
+  #timeline{background:#150d1b;}
+  .tl-list{margin-top:40px;position:relative;padding-left:26px;}
+  .tl-list::before{
+    content:'';position:absolute;left:6px;top:6px;bottom:6px;width:1px;
+    background:linear-gradient(to bottom, var(--gold), transparent);
+  }
+  .tl-item{position:relative;padding-bottom:32px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:'';position:absolute;left:-26px;top:4px;width:9px;height:9px;border-radius:50%;
+    background:var(--accent);box-shadow:0 0 10px rgba(255,107,127,0.7);
+  }
+  .tl-date{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);}
+  .tl-title{font-family:var(--serif);font-size:1.3rem;font-weight:600;margin:4px 0 6px;}
+  .tl-desc{font-size:0.9rem;color:var(--ink-dim);font-weight:300;line-height:1.6;}
+
+  /* ============ MEMORIES ============ */
+  #memories{background:linear-gradient(180deg,#150d1b,#0a0710);}
+  .masonry{
+    column-count:2;
+    column-gap:12px;
+    margin-top:34px;
+  }
+  .mas-item{
+    break-inside:avoid;
+    margin-bottom:12px;
+    border-radius:16px;
+    overflow:hidden;
+    position:relative;
+    border:1px solid var(--glass-border);
+  }
+  .mas-item img{width:100%;display:block;transition:transform .4s ease;}
+  .mas-item:active img{transform:scale(1.04);}
+  .mas-cap{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:14px 12px 10px;
+    font-size:0.68rem;
+    letter-spacing:0.03em;
+    color:var(--ink);
+    background:linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+  }
+
+  .lightbox{
+    position:fixed;inset:0;z-index:80;
+    background:rgba(6,4,9,0.94);
+    display:none;
+    align-items:center;justify-content:center;
+    padding:20px;
+  }
+  .lightbox.active{display:flex;}
+  .lightbox img{max-width:100%;max-height:80vh;border-radius:14px;object-fit:contain;}
+  .lightbox-close{
+    position:absolute;top:22px;right:22px;
+    width:44px;height:44px;border-radius:50%;
+    background:var(--glass);border:1px solid var(--glass-border);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.3rem;color:var(--ink);
+  }
+
+  /* ============ WHY YOU ============ */
+  #why{background:#0a0710;}
+  .why-grid{margin-top:34px;display:flex;flex-direction:column;gap:14px;}
+  .why-card{padding:22px 20px;display:flex;gap:16px;align-items:flex-start;}
+  .why-icon{font-size:1.5rem;line-height:1;}
+  .why-title{font-family:var(--serif);font-size:1.15rem;font-weight:600;margin-bottom:4px;color:var(--accent-soft);}
+  .why-desc{font-size:0.88rem;color:var(--ink-dim);font-weight:300;line-height:1.6;}
+
+  /* ============ FEATURE ============ */
+  #feature{
+    background:#0a0710;
+    padding-left:0;padding-right:0;
+  }
+  .feature-media{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;}
+  .feature-media video{width:100%;height:100%;object-fit:cover;filter:saturate(1.05) contrast(1.05);}
+  .feature-media::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(to top, rgba(10,7,16,0.95) 5%, rgba(10,7,16,0.15) 45%, transparent 70%);
+  }
+  .feature-text{
+    position:relative;z-index:2;
+    margin-top:-120px;
+    padding:0 8vw;
+    text-align:center;
+  }
+  .feature-quote{
+    font-family:var(--serif);font-style:italic;
+    font-size:clamp(1.4rem,6vw,2rem);
+    line-height:1.35;
+    margin-bottom:14px;
+  }
+  .feature-names{
+    font-size:0.8rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);
+  }
+
+  /* ============ LETTER ============ */
+  #letter{background:linear-gradient(180deg,#0a0710,#150d1b);text-align:center;}
+  .envelope{
+    width:min(72vw,240px);
+    margin:34px auto 0;
+    cursor:pointer;
+    position:relative;
+  }
+  .envelope svg{width:100%;display:block;filter:drop-shadow(0 15px 30px rgba(255,107,127,0.25));}
+  .envelope-label{
+    margin-top:16px;
+    font-size:0.85rem;
+    color:var(--ink-dim);
+    letter-spacing:0.05em;
+  }
+  .letter-overlay{
+    position:fixed;inset:0;z-index:90;
+    background:rgba(6,4,9,0.92);
+    display:none;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .letter-overlay.active{display:flex;}
+  .letter-paper{
+    max-width:420px;width:100%;
+    padding:40px 28px;
+    background:linear-gradient(180deg,#fbf3ec,#f6ece3);
+    color:#3a2a2c;
+    border-radius:6px;
+    box-shadow:0 30px 60px rgba(0,0,0,0.5);
+    transform:scale(0.85) translateY(20px);
+    opacity:0;
+    transition:transform .5s cubic-bezier(.2,.9,.3,1), opacity .5s ease;
+    position:relative;
+    max-height:80vh;
+    overflow-y:auto;
+  }
+  .letter-overlay.active .letter-paper{transform:scale(1) translateY(0);opacity:1;}
+  .letter-paper p{
+    font-family:var(--serif);
+    font-size:1.15rem;
+    line-height:1.85;
+    font-style:italic;
+    margin-bottom:20px;
+  }
+  .letter-sign{font-family:var(--serif);font-weight:600;font-size:1.1rem;text-align:right;}
+  .letter-close{
+    position:absolute;top:16px;right:16px;
+    width:34px;height:34px;border-radius:50%;
+    background:rgba(0,0,0,0.08);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;color:#3a2a2c;
+  }
+
+  /* ============ SONG PLAYER ============ */
+  .song-widget{
+    position:fixed;
+    left:16px;bottom:16px;
+    z-index:60;
+    display:flex;align-items:center;gap:10px;
+    padding:10px 16px 10px 10px;
+    border-radius:999px;
+    max-width:calc(100vw - 32px);
+  }
+  .song-disc{
+    width:34px;height:34px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #444, #111 70%);
+    border:2px solid var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    font-size:0.8rem;
+    animation:spin 6s linear infinite;
+    animation-play-state:paused;
+    flex-shrink:0;
+  }
+  .song-disc.playing{animation-play-state:running;}
+  @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  .song-meta{font-size:0.72rem;line-height:1.3;overflow:hidden;}
+  .song-meta b{font-weight:500;color:var(--ink);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:38vw;}
+  .song-meta span{color:var(--ink-dim);}
+  .song-toggle{
+    width:30px;height:30px;border-radius:50%;
+    background:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    font-size:0.75rem;flex-shrink:0;color:#fff;
+  }
+
+  /* ============ FINAL ============ */
+  #final{
+    min-height:100svh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;
+    position:relative;
+    padding:10vh 6vw;
+  }
+  .final-media{position:absolute;inset:0;z-index:0;}
+  .final-media video{width:100%;height:100%;object-fit:cover;}
+  .final-media::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,7,16,0.75), rgba(10,7,16,0.92));
+  }
+  .final-content{position:relative;z-index:2;}
+  .final-big{
+    font-family:var(--serif);font-style:italic;font-weight:600;
+    font-size:clamp(1.7rem,7vw,2.6rem);
+    margin-bottom:18px;
+  }
+  .final-names{
+    font-family:var(--serif);font-size:clamp(1.4rem,6vw,2rem);margin-bottom:10px;
+  }
+  .final-sub{color:var(--ink-dim);font-size:0.95rem;margin-bottom:32px;}
+
+  footer{
+    text-align:center;padding:26px;font-size:0.68rem;letter-spacing:0.15em;
+    color:rgba(255,255,255,0.25);text-transform:uppercase;
+  }
+
+  @media(min-width:640px){
+    .masonry{column-count:3;}
+    .why-grid{display:grid;grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ======================================================= -->
+<!-- EDITABLE DATA — ganti semua nilai di bawah sesuai pasangan -->
+<!-- ======================================================= -->
+<script id="config-data">
+  window.STORY_CONFIG = {
+    namaKamu: "Bima",
+    namaDia: "Atsa",
+    tanggalJadian: "2 Agustus",
+    tagline: "Our story is my favorite story.",
+
+    fotoUtama: "https://c.termai.cc/i121/nKHtCcD.jpg",
+
+    ceritaKita: "Awalnya mungkin cuma dua orang yang saling kenal. Tapi dari percakapan kecil, tawa sederhana, dan berbagai momen yang kita lewati, akhirnya terbentuk cerita yang sampai sekarang masih ingin terus aku lanjutkan.",
+    ceritaMedia: "https://c.termai.cc/v160/8X0nY.mp4",
+
+    // opsional — kosongkan array ini (timeline: []) jika tidak ingin section ini tampil
+    timeline: [
+      { tanggal: "Awal Cerita", judul: "Perkenalan", desc: "Momen pertama kali kita saling kenal." },
+      { tanggal: "2 Agustus", judul: "Hari Jadi", desc: "Hari saat cerita ini resmi dimulai." },
+      { tanggal: "Sekarang", judul: "Masih Berlanjut", desc: "Dan cerita ini masih terus kita tulis bersama." }
+    ],
+
+    fotoGallery: [
+      { src: "https://c.termai.cc/i165/4ABXWF.jpg", caption: "A moment I'll always remember." },
+      { src: "https://c.termai.cc/i190/4RIqw.jpg", caption: "A moment I'll always remember." },
+      { src: "https://c.termai.cc/i190/tC89h.jpg", caption: "A moment I'll always remember." },
+      { src: "https://c.termai.cc/i142/Nvn2pzD.jpg", caption: "A moment I'll always remember." },
+      { src: "https://c.termai.cc/i175/UHprS5.png", caption: "A moment I'll always remember." },
+      { src: "https://c.termai.cc/i130/CJtSp.jpg", caption: "A moment I'll always remember." }
+    ],
+
+    whyYou: [
+      { icon: "❤️", title: "Your Smile", desc: "Karena senyum kamu selalu punya cara sendiri buat bikin hari jadi lebih baik." },
+      { icon: "😂", title: "Your Randomness", desc: "Karena hal random dari kamu selalu berhasil bikin aku ketawa." },
+      { icon: "🫂", title: "Your Presence", desc: "Karena sekadar tahu kamu ada saja sudah berarti." },
+      { icon: "🌙", title: "Your Personality", desc: "Karena menjadi diri kamu sendiri adalah salah satu hal yang aku suka." }
+    ],
+
+    featureMedia: "https://c.termai.cc/v140/x3BetD.mp4",
+    featureQuote: "If I could choose again, I'd still choose this story.",
+
+    pesanCinta: "Terima kasih sudah hadir di hidupku. Terima kasih untuk semua tawa, cerita, perhatian, dan momen kecil yang sudah kita lewati. Aku nggak butuh cerita yang sempurna, aku cuma ingin cerita yang terus kita jalani dan isi bersama.",
+
+    judulLagu: "And make your way",
+    artisLagu: "Allba",
+    // ganti path ini dengan file musik kamu sendiri (mp3/ogg), taruh di folder yang sama dengan file html ini
+    fileLagu: "musik/our-song.mp3",
+
+    finalMedia: "https://c.termai.cc/v160/8X0nY.mp4"
+  };
+</script>
+
+<!-- ======================================================= -->
+<!-- HERO -->
+<!-- ======================================================= -->
+<section id="hero">
+  <div class="hearts-field" id="heartsField"></div>
+
+  <div class="hero-photo-wrap">
+    <img class="hero-photo" id="fotoUtamaEl" src="" alt="Foto kami berdua">
+  </div>
+
+  <h1 class="hero-names">
+    <span id="heroNamaKamu"></span><span class="amp">&</span><span id="heroNamaDia"></span>
+  </h1>
+  <p class="hero-date" id="heroTanggal"></p>
+  <p class="hero-tagline" id="heroTagline"></p>
+
+  <button class="btn" id="btnLihatCerita">💗 Lihat Cerita Kita</button>
+</section>
+
+<!-- ======================================================= -->
+<!-- OUR STORY -->
+<!-- ======================================================= -->
+<section id="story" class="section">
+  <div class="section-inner">
+    <span class="eyebrow">Our Story</span>
+    <h2 class="title">Tentang <em>Kita</em></h2>
+    <div class="thread"></div>
+
+    <div class="glass story-card">
+      <p id="ceritaKitaText"></p>
+    </div>
+
+    <div class="story-media">
+      <video id="ceritaMediaEl" autoplay muted loop playsinline></video>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- TIMELINE (opsional) -->
+<!-- ======================================================= -->
+<section id="timeline" class="section">
+  <div class="section-inner">
+    <span class="eyebrow">Our Journey</span>
+    <h2 class="title">Perjalanan <em>Kita</em></h2>
+    <div class="thread"></div>
+    <div class="tl-list" id="tlList"></div>
+  </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- OUR MEMORIES -->
+<!-- ======================================================= -->
+<section id="memories" class="section">
+  <div class="section-inner">
+    <span class="eyebrow">Gallery</span>
+    <h2 class="title">Our <em>Memories</em></h2>
+    <div class="thread"></div>
+    <div class="masonry" id="masonryGrid"></div>
+  </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- WHY YOU -->
+<!-- ======================================================= -->
+<section id="why" class="section">
+  <div class="section-inner">
+    <span class="eyebrow">Reasons</span>
+    <h2 class="title">Why <em>You?</em></h2>
+    <div class="thread"></div>
+    <div class="why-grid" id="whyGrid"></div>
+  </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- PHOTO FEATURE -->
+<!-- ======================================================= -->
+<section id="feature">
+  <div class="feature-media">
+    <video id="featureMediaEl" autoplay muted loop playsinline></video>
+  </div>
+  <div class="feature-text">
+    <p class="feature-quote" id="featureQuoteText"></p>
+    <p class="feature-names" id="featureNames"></p>
+  </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- DIGITAL LETTER -->
+<!-- ======================================================= -->
+<section id="letter" class="section">
+  <div class="section-inner">
+    <span class="eyebrow">Just For You</span>
+    <h2 class="title">You Have A <em>Letter</em></h2>
+    <div class="thread"></div>
+
+    <div class="envelope" id="envelopeBtn">
+      <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="14" width="192" height="112" rx="10" fill="#1c1220" stroke="#d9a868" stroke-width="1.5"/>
+        <path d="M6 20 L100 90 L194 20" fill="none" stroke="#d9a868" stroke-width="1.5"/>
+        <circle cx="100" cy="55" r="12" fill="#ff6b7f"/>
+        <text x="100" y="60" font-size="13" fill="#fff" text-anchor="middle" font-family="serif">♥</text>
+      </svg>
+    </div>
+    <p class="envelope-label">💌 Tap the envelope to open</p>
+  </div>
+</section>
+
+<div class="letter-overlay" id="letterOverlay">
+  <div class="letter-paper">
+    <button class="letter-close" id="letterClose">✕</button>
+    <p id="letterText"></p>
+    <p class="letter-sign" id="letterSign"></p>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- FINAL SECTION -->
+<!-- ======================================================= -->
+<section id="final">
+  <div class="final-media">
+    <video id="finalMediaEl" autoplay muted loop playsinline></video>
+  </div>
+  <div class="final-content">
+    <p class="final-big">And this is just the beginning…</p>
+    <p class="final-names"><span id="finalNamaKamu"></span> ❤️ <span id="finalNamaDia"></span></p>
+    <p class="final-sub">Let's make more memories.</p>
+    <button class="btn ghost" id="btnRestart">💗 Start From The Beginning</button>
+  </div>
+</section>
+
+<footer id="footerText"></footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">✕</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<!-- Song widget -->
+<div class="song-widget glass" id="songWidget">
+  <div class="song-disc" id="songDisc">🎵</div>
+  <div class="song-meta">
+    <b id="songTitle"></b>
+    <span id="songArtist"></span>
+  </div>
+  <div class="song-toggle" id="songToggle">▶</div>
+</div>
+<audio id="bgAudio" loop preload="auto"></audio>
+
+<script>
+(function(){
+  const cfg = window.STORY_CONFIG;
+
+  // ---------- Hero ----------
+  document.getElementById('fotoUtamaEl').src = cfg.fotoUtama;
+  document.getElementById('heroNamaKamu').textContent = cfg.namaKamu;
+  document.getElementById('heroNamaDia').textContent = cfg.namaDia;
+  document.getElementById('heroTanggal').textContent = cfg.tanggalJadian;
+  document.getElementById('heroTagline').textContent = '“' + cfg.tagline + '” ❤️';
+
+  document.getElementById('btnLihatCerita').addEventListener('click', () => {
+    document.getElementById('story').scrollIntoView({behavior:'smooth'});
+    tryPlaySong();
+  });
+
+  // floating hearts (subtle, limited count)
+  const heartsField = document.getElementById('heartsField');
+  const heartChars = ['♥','❤','💗'];
+  for(let i=0;i<9;i++){
+    const h = document.createElement('span');
+    h.className = 'heart-p';
+    h.textContent = heartChars[i % heartChars.length];
+    h.style.left = (5 + Math.random()*90) + '%';
+    h.style.fontSize = (10 + Math.random()*10) + 'px';
+    h.style.animationDuration = (9 + Math.random()*8) + 's';
+    h.style.animationDelay = (Math.random()*10) + 's';
+    heartsField.appendChild(h);
+  }
+
+  // ---------- Story ----------
+  document.getElementById('ceritaKitaText').textContent = cfg.ceritaKita;
+  document.getElementById('ceritaMediaEl').src = cfg.ceritaMedia;
+
+  // ---------- Timeline ----------
+  const tlList = document.getElementById('tlList');
+  const tlSection = document.getElementById('timeline');
+  if(!cfg.timeline || cfg.timeline.length === 0){
+    tlSection.style.display = 'none';
+  } else {
+    cfg.timeline.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'tl-item';
+      el.innerHTML = `<div class="tl-date">${item.tanggal}</div>
+                      <div class="tl-title">${item.judul}</div>
+                      <div class="tl-desc">${item.desc}</div>`;
+      tlList.appendChild(el);
+    });
+  }
+
+  // ---------- Memories ----------
+  const masonry = document.getElementById('masonryGrid');
+  cfg.fotoGallery.forEach((photo, idx) => {
+    const item = document.createElement('div');
+    item.className = 'mas-item';
+    item.innerHTML = `<img src="${photo.src}" alt="Memory ${idx+1}" loading="lazy">
+                       <div class="mas-cap">${photo.caption}</div>`;
+    item.addEventListener('click', () => openLightbox(photo.src));
+    masonry.appendChild(item);
+  });
+
+  function openLightbox(src){
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightbox').classList.add('active');
+  }
+  document.getElementById('lightboxClose').addEventListener('click', () => {
+    document.getElementById('lightbox').classList.remove('active');
+  });
+  document.getElementById('lightbox').addEventListener('click', (e) => {
+    if(e.target.id === 'lightbox') e.currentTarget.classList.remove('active');
+  });
+
+  // ---------- Why You ----------
+  const whyGrid = document.getElementById('whyGrid');
+  cfg.whyYou.forEach(card => {
+    const el = document.createElement('div');
+    el.className = 'glass why-card';
+    el.innerHTML = `<div class="why-icon">${card.icon}</div>
+                     <div>
+                       <div class="why-title">${card.title}</div>
+                       <div class="why-desc">${card.desc}</div>
+                     </div>`;
+    whyGrid.appendChild(el);
+  });
+
+  // ---------- Feature ----------
+  document.getElementById('featureMediaEl').src = cfg.featureMedia;
+  document.getElementById('featureQuoteText').textContent = '“' + cfg.featureQuote + '”';
+  document.getElementById('featureNames').textContent = cfg.namaKamu + ' × ' + cfg.namaDia;
+
+  // ---------- Letter ----------
+  document.getElementById('letterText').textContent = cfg.pesanCinta;
+  document.getElementById('letterSign').textContent = '— ' + cfg.namaKamu + ' ❤️';
+  document.getElementById('envelopeBtn').addEventListener('click', () => {
+    document.getElementById('letterOverlay').classList.add('active');
+  });
+  document.getElementById('letterClose').addEventListener('click', () => {
+    document.getElementById('letterOverlay').classList.remove('active');
+  });
+  document.getElementById('letterOverlay').addEventListener('click', (e) => {
+    if(e.target.id === 'letterOverlay') e.currentTarget.classList.remove('active');
+  });
+
+  // ---------- Final ----------
+  document.getElementById('finalMediaEl').src = cfg.finalMedia;
+  document.getElementById('finalNamaKamu').textContent = cfg.namaKamu;
+  document.getElementById('finalNamaDia').textContent = cfg.namaDia;
+  document.getElementById('btnRestart').addEventListener('click', () => {
+    document.getElementById('hero').scrollIntoView({behavior:'smooth'});
+  });
+
+  document.getElementById('footerText').textContent =
+    cfg.namaKamu + ' & ' + cfg.namaDia + ' — A little website about us.';
+
+  // ---------- Song player ----------
+  const audio = document.getElementById('bgAudio');
+  audio.src = cfg.fileLagu;
+  document.getElementById('songTitle').textContent = cfg.judulLagu;
+  document.getElementById('songArtist').textContent = cfg.artisLagu;
+  const songDisc = document.getElementById('songDisc');
+  const songToggle = document.getElementById('songToggle');
+  let userPaused = false;
+
+  function setPlayingUI(isPlaying){
+    songDisc.classList.toggle('playing', isPlaying);
+    songToggle.textContent = isPlaying ? '❚❚' : '▶';
+  }
+
+  function tryPlaySong(){
+    if(userPaused) return;
+    const p = audio.play();
+    if(p !== undefined){
+      p.then(() => setPlayingUI(true)).catch(() => setPlayingUI(false));
+    }
+  }
+
+  songToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if(audio.paused){
+      userPaused = false;
+      tryPlaySong();
+    } else {
+      audio.pause();
+      userPaused = true;
+      setPlayingUI(false);
+    }
+  });
+
+  // Try autoplay immediately (browsers may block until first interaction)
+  window.addEventListener('load', tryPlaySong);
+
+  // Fallback: first tap/scroll anywhere unlocks autoplay-with-sound
+  let unlocked = false;
+  function unlockAudio(){
+    if(unlocked || userPaused) return;
+    unlocked = true;
+    tryPlaySong();
+  }
+  ['click','touchstart','scroll'].forEach(evt => {
+    window.addEventListener(evt, unlockAudio, { once:true, passive:true });
+  });
+})();
+</script>
+
+</body>
+</html>
